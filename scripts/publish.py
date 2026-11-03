@@ -63,7 +63,7 @@ def build(post):
                    children=",".join(children), caption=post["caption"])["id"]
     else:
         cid = call("POST", f"{USER}/media", media_type="REELS", video_url=media_url(post["media"][0]),
-                   caption=post["caption"], share_to_feed="true")["id"]
+                   caption=post["caption"], share_to_feed="false")["id"]
     wait_ready(cid)
     return cid
 

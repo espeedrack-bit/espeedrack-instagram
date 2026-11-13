@@ -1,0 +1,11 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Architecture - speedrack shorts uploader</title><link rel="stylesheet" href="diagram.css"></head><body>
+<h1>speedrack shorts uploader — Architecture</h1>
+<div class="row">
+<div class="box"><b>1. Our video files</b>Finished FAQ Shorts (MP4) made by SPEEDRACK, stored in our private repository with a schedule (schedule.json) approved by staff.</div><div class="arrow">→</div>
+<div class="box"><b>2. GitHub Actions (scheduler)</b>Runs scripts/youtube.py at the scheduled time. Secrets (client ID/secret, refresh token) kept as encrypted GitHub secrets.</div><div class="arrow">→</div>
+<div class="box g"><b>3. Google OAuth 2.0</b>oauth2.googleapis.com/token<br>Refresh token → access token<br>Scope: youtube.upload only</div><div class="arrow">→</div>
+<div class="box y"><b>4. YouTube Data API v3</b>videos.insert (resumable upload)<br>title, description, category, privacy</div><div class="arrow">→</div>
+<div class="box"><b>5. Our channel</b>@스피드랙온라인지점<br>Upload result logged to youtube.json (video ID, time)</div>
+</div>
+<p class="note">Only one Google account (our own channel, espeedrack@gmail.com) is authorized. No other users, no front-end, no data read from YouTube. Endpoint used: videos.insert only (1,600 units per upload). Policy pages: espeedrack-bit.github.io/espeedrack-instagram/</p>
+</body></html>

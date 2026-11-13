@@ -1,0 +1,11 @@
+<!doctype html><html><head><meta charset="utf-8"><title>User flow - speedrack shorts uploader</title><link rel="stylesheet" href="diagram.css"></head><body>
+<h1>speedrack shorts uploader — User flow (staff only)</h1>
+<ol>
+<li><b>One-time setup:</b> our staff signs in with our channel's Google account (espeedrack@gmail.com) on the Google OAuth consent screen and grants only the <code>youtube.upload</code> scope. The refresh token is saved as an encrypted GitHub secret.</li>
+<li><b>Prepare:</b> staff produces each FAQ Short and adds it to the schedule with a title (the customer question) and description.</li>
+<li><b>Approve:</b> the owner reviews each week's videos and marks them approved. Unapproved videos are never uploaded.</li>
+<li><b>Upload:</b> at the scheduled time GitHub Actions runs the script: refresh token → access token → videos.insert → video is published on our channel.</li>
+<li><b>Log:</b> the video ID and time are saved to youtube.json so nothing is uploaded twice.</li>
+<li><b>Revoke / delete:</b> access can be revoked any time at myaccount.google.com/permissions; the token and log are deleted when we stop using the tool.</li>
+</ol>
+</body></html>

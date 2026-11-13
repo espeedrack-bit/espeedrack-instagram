@@ -1,7 +1,7 @@
 """Upload the day's approved reel to YouTube as a Short (YouTube Data API v3).
 
-Runs after publish.py. It uses the same schedule.json entries (type "reel") and the
-same approval flag, and logs uploads to youtube.json so nothing goes up twice.
+Uses the "youtube" list in schedule.json (built by scripts/plan.py; its own pace, separate
+from Instagram) and its approval flag, and logs uploads to youtube.json so nothing goes up twice.
 
 Usage:
   python scripts/youtube.py            # upload the reel due for the current KST slot
@@ -29,7 +29,7 @@ def access_token():
 
 
 def title_of(post):
-    q = next((l[3:].strip() for l in post["caption"].splitlines() if l.startswith("Q. ")), "")
+    q = post.get("question") or next((l[3:].strip() for l in post["caption"].splitlines() if l.startswith("Q. ")), "")
     t = f"{q} | 스피드랙 자주 묻는 질문 #Shorts"
     return t if len(t) <= 100 else q[:100 - 9] + " #Shorts"
 
@@ -83,14 +83,14 @@ def main():
     sched = json.load(open("schedule.json"))
     log = json.load(open(LOG)) if os.path.exists(LOG) else []
     done = {x["id"] for x in log}
-    by_id = {p["id"]: p for p in sched["posts"]}
+    items = sched.get("youtube", [])
+    by_id = {p["id"]: p for p in items + sched["posts"]}
     if a.id:
         due = [by_id[a.id]]
     else:
+        # Everything scheduled for today whose slot has come (late runs catch up the same day).
         now = datetime.datetime.now(KST)
-        due = [p for p in sched["posts"] if p["date"] == now.strftime("%Y-%m-%d")
-               and p["slot"] == "20:00" and now.hour >= 16]
-    due = [p for p in due if p["type"] == "reel"]
+        due = [p for p in items if p["date"] == now.strftime("%Y-%m-%d") and p["slot"] <= now.strftime("%H:%M")]
 
     token = None
     for post in due:

@@ -6,7 +6,7 @@ on:
       id:
         description: "reel id from schedule.json"
         required: true
-        default: "2026-10-30-2000-faq1"
+        default: "yt-2026-11-16-0900-faq1"
 jobs:
   test:
     runs-on: ubuntu-latest

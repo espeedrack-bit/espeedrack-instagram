@@ -1,8 +1,9 @@
 name: publish
 on:
-  schedule:
-    - cron: "0 3 * * *"   # 12:00 KST card-news
-    - cron: "0 11 * * *"  # 20:00 KST reel
+  # Paused 2026-11-13 (SY): stop posting to speedrack_official; a new account is coming.
+  # schedule:
+  #   - cron: "0 3 * * *"   # 12:00 KST card-news
+  #   - cron: "0 11 * * *"  # 20:00 KST reel
   workflow_dispatch:
     inputs:
       id:

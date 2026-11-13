@@ -1,0 +1,21 @@
+name: youtube-test
+# Manual test: upload one reel to YouTube as a PRIVATE video. Nothing is recorded.
+on:
+  workflow_dispatch:
+    inputs:
+      id:
+        description: "reel id from schedule.json"
+        required: true
+        default: "2026-10-30-2000-faq1"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Upload private test
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          YT_PRIVACY: private
+        run: python scripts/youtube.py --id "${{ inputs.id }}"
